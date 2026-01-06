@@ -1,4 +1,28 @@
+<?php
+   require '../function.php';
 
+   if(isset($_POST['register'])){
+        $namalengkap = $_POST['namalengkap'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $password = $hash;
+
+        //? ngambil dan cek databse yang ada
+        $cekdatabase = mysqli_query($conn, "SELECT * FROM login where email='$email' and password='$password'");
+
+        //? hitung jumlah data
+        $hitung = mysqli_num_rows($cekdatabase);
+
+        if(hitung > 0){
+            $_SESSION['log'] = 'True';
+            header('Location: dashboard.php');
+        } else {
+            header('Location: login.php');
+        }
+   };
+?>
 
 <!DOCTYPE html>
 <html class="light" lang="id">
@@ -31,7 +55,7 @@
                 <div class="size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <span class="material-symbols-outlined">school</span>
                 </div>
-                <h2 class="text-lg font-bold">Kelas 12A</h2>
+                <h2 class="text-lg font-bold">Kelas 2DC02</h2>
             </div>
             <nav class="hidden md:flex items-center gap-9">
                 <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Beranda</a>
@@ -60,17 +84,17 @@
                         <form class="flex flex-col gap-4">
                             <div>
                                 <label class="text-sm font-medium block mb-2">Nama Lengkap</label>
-                                <input type="text" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="Nama lengkap Anda" />
+                                <input type="text" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="Nama lengkap Anda" required />
                             </div>
                             <div>
                                 <label class="text-sm font-medium block mb-2">Email</label>
-                                <input type="email" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="contoh@email.com" />
+                                <input type="email" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="contoh@email.com" required/>
                             </div>
                             <div>
                                 <label class="text-sm font-medium block mb-2">Kata Sandi</label>
-                                <input type="password" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="Minimal 8 karakter" />
+                                <input type="password" class="w-full rounded-lg border-[#dbe0e6] dark:bg-[#111827] focus:ring-primary/20 focus:border-primary h-12 px-4" placeholder="Minimal 8 karakter" required/>
                             </div>
-                            <button class="w-full h-12 bg-primary text-white font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md mt-2">Daftar Sekarang</button>
+                            <button href="dashboard.php" class="w-full h-12 bg-primary text-white font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md mt-2">Daftar Sekarang</button>
                         </form>
                         <p class="text-center text-sm text-[#617589] mt-4">Sudah punya akun? <a href="#" class="text-primary font-bold hover:underline">Masuk</a></p>
                     </div>
